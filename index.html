@@ -1030,6 +1030,98 @@
                     <!-- TAB 4: SEGURIDAD, CONFIGURACIONES GPS Y CLAVE -->
                     <div id="admin-tab-security" class="hidden flex flex-col gap-6">
 
+                        <!-- PANEL 24/7: MODO ANTI-SUSPENSIÓN / KEEP-ALIVE PARA RENDER -->
+                        <div class="glass-panel rounded-3xl overflow-hidden shadow-2xl bg-dark-panel border border-brand/30">
+                            <div class="glass-window-header px-5 py-3.5 flex items-center justify-between bg-dark-window/80 border-b border-brand/10">
+                                <div class="flex items-center gap-2">
+                                    <span class="relative flex h-2.5 w-2.5">
+                                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                      <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                                    </span>
+                                    <span class="text-xs text-brand font-bold uppercase tracking-wider">MODO ANTI-SUSPENSIÓN 24/7 (RENDER KEEP-ALIVE)</span>
+                                </div>
+                                <span id="keep-alive-status-badge" class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
+                                    <i data-lucide="zap" class="w-3 h-3 text-emerald-400"></i> Auto-Ping Activo
+                                </span>
+                            </div>
+                            <div class="p-6 space-y-5">
+                                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-brand/10 pb-5">
+                                    <div class="space-y-1">
+                                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                                            <i data-lucide="activity" class="text-brand w-5 h-5"></i> Sistema Permanente de Auto-Despertar
+                                        </h3>
+                                        <p class="text-xs text-slate-300 max-w-2xl leading-relaxed">
+                                            En servidores gratuitos como <strong>Render</strong>, la aplicación se apaga automáticamente tras 15 minutos de inactividad perdiendo la memoria temporal. Este sistema envía pulsos automáticos cada <strong class="text-brand">8 minutos</strong> para que tu página <strong>NUNCA se apague</strong> y mantenga los datos siempre vivos y listos.
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center gap-3 shrink-0">
+                                        <div class="bg-dark-input px-4 py-2.5 rounded-xl border border-brand/10 text-center">
+                                            <span class="block text-[10px] text-slate-400 font-bold uppercase">Pings Emitidos</span>
+                                            <span id="keep-alive-pings-count" class="text-sm font-extrabold text-brand">0 pings</span>
+                                        </div>
+                                        <div class="bg-dark-input px-4 py-2.5 rounded-xl border border-brand/10 text-center">
+                                            <span class="block text-[10px] text-slate-400 font-bold uppercase">Último Estado</span>
+                                            <span id="keep-alive-last-ping" class="text-xs font-semibold text-emerald-400">Activo</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- CONFIGURACIÓN DE URL DEL SERVICIO -->
+                                <div>
+                                    <label class="block text-xs font-bold text-white uppercase tracking-wider mb-2 flex items-center justify-between">
+                                        <span>URL Pública del Servicio Render:</span>
+                                        <span class="text-[10px] text-slate-400 normal-case font-normal">(Detectada automáticamente o editable)</span>
+                                    </label>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <div class="relative flex-1">
+                                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                                <i data-lucide="globe" class="w-4 h-4"></i>
+                                            </div>
+                                            <input type="url" id="keep-alive-url" placeholder="https://tu-sitio.onrender.com" class="w-full bg-dark-input border border-brand/20 rounded-xl pl-10 pr-4 py-2.5 text-xs text-white focus:outline-none focus:border-brand font-mono">
+                                        </div>
+                                        <button onclick="saveKeepAliveURL()" class="bg-brand/15 hover:bg-brand text-brand hover:text-dark-bg border border-brand/30 font-bold py-2.5 px-4 rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 shrink-0">
+                                            <i data-lucide="save" class="w-3.5 h-3.5"></i> Guardar URL
+                                        </button>
+                                        <button onclick="testPingNow()" id="btn-keepalive-ping-now" class="bg-dark-window hover:bg-dark-input text-slate-200 border border-brand/20 hover:border-brand/40 font-bold py-2.5 px-4 rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-1.5 shrink-0">
+                                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-brand"></i> Probar Ping Ahora
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- GUÍA EXTERNA 100% GRATIS DE REDUNDANCIA -->
+                                <div class="bg-dark-input/60 rounded-2xl p-4 border border-brand/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                                    <div class="flex items-start gap-2.5">
+                                        <i data-lucide="shield-check" class="w-5 h-5 text-brand shrink-0 mt-0.5"></i>
+                                        <div class="space-y-0.5">
+                                            <p class="text-white font-semibold">Garantía Externa 24/7 Redundante (Opcional)</p>
+                                            <p class="text-slate-400 text-[11px]">
+                                                Puedes registrar la URL directa de ping en <strong>cron-job.org</strong> o <strong>uptimerobot.com</strong> (cada 5 min hacia <code class="text-brand bg-brand/10 px-1 py-0.5 rounded font-mono">/api/ping</code>) para garantizar que la app permanezca encendida incluso durante semanas sin que nadie abra el navegador.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- RESPALDO Y RESTAURACIÓN EN 1 CLIC -->
+                                <div class="pt-2 border-t border-brand/10 flex flex-wrap items-center justify-between gap-3">
+                                    <div>
+                                        <p class="text-xs font-bold text-white flex items-center gap-1.5">
+                                            <i data-lucide="hard-drive" class="w-4 h-4 text-brand"></i> Copias de Seguridad y Respaldo Local
+                                        </p>
+                                        <p class="text-[11px] text-slate-400">Descarga o restaura un archivo con todos los trabajadores, turnos y asistencias en formato .json.</p>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <button onclick="exportFullBackupJSON()" class="bg-brand/10 hover:bg-brand text-brand hover:text-dark-bg border border-brand/20 font-bold py-2 px-3.5 rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5">
+                                            <i data-lucide="download" class="w-3.5 h-3.5"></i> Descargar Respaldo (.json)
+                                        </button>
+                                        <label class="cursor-pointer bg-dark-window hover:bg-dark-input text-slate-200 border border-brand/20 font-bold py-2 px-3.5 rounded-xl text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5">
+                                            <i data-lucide="upload" class="w-3.5 h-3.5 text-brand"></i> Restaurar Respaldo (.json)
+                                            <input type="file" id="backup-file-input" accept=".json" onchange="importFullBackupJSON(event)" class="hidden">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- PANEL: SINCRONIZACIÓN MANUAL AL SERVIDOR -->
                         <div class="glass-panel rounded-3xl overflow-hidden shadow-2xl bg-dark-panel border border-brand/20">
                             <div class="glass-window-header px-5 py-3.5 flex items-center justify-between">
@@ -1402,6 +1494,8 @@
             await loadData();
             populateMonthsDropdowns();
             startLiveClock();
+            startKeepAliveHeartbeat();
+            initKeepAliveUI();
             updateUI();
             const overlay = document.getElementById('app-loading-overlay');
             if (overlay) overlay.classList.add('hidden');
@@ -1483,11 +1577,34 @@
         }
 
         async function loadData() {
+            // Carga inicial local para respuesta inmediata de interfaz
+            loadFromLocalStorage();
+
             try {
                 const res = await fetch('/api/data');
                 if (res.ok) {
                     const d = await res.json();
-                    if (d && d.workers) {
+
+                    // Salvaguarda Anti-Suspensión Render:
+                    // Si el servidor se reinició en limpio en Render y no tiene registros,
+                    // pero el navegador ya tiene asistencias o transacciones guardadas,
+                    // NO sobreescribir con vacío; rehidratar el servidor de inmediato.
+                    const localHasData = (attendance && attendance.length > 0) || 
+                                         (transactions && transactions.length > 0) || 
+                                         (schedules && schedules.length > 0);
+                    const serverHasData = d && (
+                        (Array.isArray(d.attendance) && d.attendance.length > 0) ||
+                        (Array.isArray(d.transactions) && d.transactions.length > 0) ||
+                        (Array.isArray(d.schedules) && d.schedules.length > 0)
+                    );
+
+                    if (!serverHasData && localHasData) {
+                        console.warn("[Anti-Suspensión] Servidor reanudado sin datos. Restaurando datos desde navegador...");
+                        saveToServer();
+                        return;
+                    }
+
+                    if (d && d.workers && d.workers.length > 0) {
                         workers = d.workers;
                         const javier = workers.find(w => w.id === "1" || (w.name && w.name.toLowerCase() === "javier olate") || w.role === "admin");
                         if (javier) {
@@ -1495,21 +1612,53 @@
                             javier.pass = "fellhonpm";
                         }
                     }
-                    if (d && d.branches) branches = d.branches;
-                    if (d && d.attendance) attendance = d.attendance;
-                    if (d && d.transactions) transactions = d.transactions;
-                    if (d && d.schedules) schedules = d.schedules;
-                    if (d && d.pendingDeletions) pendingDeletions = d.pendingDeletions;
+                    if (d && d.branches && d.branches.length > 0) branches = d.branches;
+
+                    if (d && Array.isArray(d.attendance)) {
+                        if (d.attendance.length >= (attendance ? attendance.length : 0)) {
+                            attendance = d.attendance;
+                        } else if (attendance && attendance.length > 0) {
+                            const ids = new Set(attendance.map(a => a.id));
+                            d.attendance.forEach(a => { if (!ids.has(a.id)) attendance.push(a); });
+                        }
+                    }
+
+                    if (d && Array.isArray(d.transactions)) {
+                        if (d.transactions.length >= (transactions ? transactions.length : 0)) {
+                            transactions = d.transactions;
+                        }
+                    }
+
+                    if (d && Array.isArray(d.schedules)) {
+                        if (d.schedules.length >= (schedules ? schedules.length : 0)) {
+                            schedules = d.schedules;
+                        }
+                    }
+
+                    if (d && Array.isArray(d.pendingDeletions)) {
+                        pendingDeletions = d.pendingDeletions;
+                    }
+
                     const savedLogo = localStorage.getItem('business_logo_png');
                     if (savedLogo) {
                         const logoEl = document.getElementById('business-logo');
                         if (logoEl) logoEl.src = savedLogo;
                     }
+
+                    // Guardar versión unificada más reciente en localStorage
+                    localStorage.setItem('workers_db_v7', JSON.stringify(workers));
+                    localStorage.setItem('branches_db_v7', JSON.stringify(branches));
+                    localStorage.setItem('attendance_db_v7', JSON.stringify(attendance));
+                    localStorage.setItem('transactions_db_v7', JSON.stringify(transactions));
+                    localStorage.setItem('schedules_db_v7', JSON.stringify(schedules));
+                    localStorage.setItem('pendingDeletions_db_v7', JSON.stringify(pendingDeletions));
                     return;
                 }
-            } catch(e) {}
-            // Servidor vacío — cargar localStorage y migrar automáticamente al servidor
-            loadFromLocalStorage();
+            } catch(e) {
+                console.warn("[Carga] Conectando en modo local fuera de línea:", e);
+            }
+
+            // Si el servidor estaba caído o no respondió, asegurar que se guarde en cuanto reviva
             saveToServer();
         }
 
@@ -1570,6 +1719,155 @@
                 const devPlaceholder = document.getElementById('dev-logo-placeholder');
                 if (devPlaceholder) devPlaceholder.classList.add('hidden');
             }
+        }
+
+        // --- SISTEMA KEEP-ALIVE 24/7 & HEARTBEAT PARA RENDER ---
+        function startKeepAliveHeartbeat() {
+            // Heartbeat de navegador cada 4 minutos para evitar que Render se suspenda mientras la pestaña esté abierta
+            setInterval(async () => {
+                try {
+                    await fetch('/api/ping');
+                } catch(e) {}
+            }, 4 * 60 * 1000);
+        }
+
+        async function initKeepAliveUI() {
+            const urlInput = document.getElementById('keep-alive-url');
+            const pingsCountEl = document.getElementById('keep-alive-pings-count');
+            const lastPingEl = document.getElementById('keep-alive-last-ping');
+
+            try {
+                const res = await fetch('/api/keep-alive');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (urlInput) {
+                        if (data.url && !data.url.includes('localhost')) {
+                            urlInput.value = data.url;
+                        } else if (!urlInput.value) {
+                            urlInput.value = window.location.origin;
+                        }
+                    }
+                    if (pingsCountEl) pingsCountEl.innerText = `${data.totalPingsSent || 0} pings`;
+                    if (lastPingEl && data.lastPingStatus) {
+                        lastPingEl.innerText = data.lastPingStatus;
+                    }
+                }
+            } catch (e) {
+                if (urlInput && !urlInput.value) {
+                    urlInput.value = window.location.origin;
+                }
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        async function saveKeepAliveURL() {
+            const urlInput = document.getElementById('keep-alive-url');
+            if (!urlInput) return;
+            const newUrl = urlInput.value.trim();
+            if (!newUrl) {
+                showToast("Por favor ingresa la URL de tu aplicación en Render", "alert-triangle", "danger");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/keep-alive/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: newUrl, enabled: true, intervalMinutes: 8 })
+                });
+                if (res.ok) {
+                    showToast("URL de Anti-Suspensión guardada. Servidor activo 24/7.", "shield-check", "success");
+                    initKeepAliveUI();
+                } else {
+                    showToast("Error al guardar la configuración en el servidor.", "alert-triangle", "danger");
+                }
+            } catch(e) {
+                showToast("Error de conexión con el servidor.", "wifi-off", "danger");
+            }
+        }
+
+        async function testPingNow() {
+            const btn = document.getElementById('btn-keepalive-ping-now');
+            const statusEl = document.getElementById('keep-alive-last-ping');
+            if (btn) btn.disabled = true;
+            if (statusEl) statusEl.innerText = "Emitiendo ping...";
+
+            try {
+                const res = await fetch('/api/keep-alive/ping-now', { method: 'POST' });
+                const data = await res.json();
+                if (data.ok) {
+                    showToast(`¡Ping Exitoso! Tiempo: ${data.duration}ms. Servidor 100% activo.`, "check-circle", "success");
+                    if (statusEl) statusEl.innerText = `${data.status}`;
+                    initKeepAliveUI();
+                } else {
+                    showToast(`Fallo de ping: ${data.error || 'Error'}`, "alert-triangle", "danger");
+                    if (statusEl) statusEl.innerText = `Error: ${data.error}`;
+                }
+            } catch(e) {
+                showToast("Error de conexión al emitir ping", "wifi-off", "danger");
+            }
+
+            if (btn) btn.disabled = false;
+        }
+
+        function exportFullBackupJSON() {
+            const backup = {
+                version: "v7-render-safe",
+                exportedAt: new Date().toISOString(),
+                workers,
+                branches,
+                attendance,
+                transactions,
+                schedules,
+                pendingDeletions
+            };
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backup, null, 2));
+            const downloadAnchor = document.createElement('a');
+            const dateStr = new Date().toISOString().split('T')[0];
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `respaldo-portal-control-${dateStr}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+            showToast("Respaldo completo descargado (.json)", "download", "success");
+        }
+
+        function importFullBackupJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = async function(e) {
+                try {
+                    const parsed = JSON.parse(e.target.result);
+                    if (!parsed.workers && !parsed.attendance) {
+                        showToast("Archivo de respaldo inválido o incompatible", "alert-triangle", "danger");
+                        return;
+                    }
+                    if (parsed.workers) workers = parsed.workers;
+                    if (parsed.branches) branches = parsed.branches;
+                    if (parsed.attendance) attendance = parsed.attendance;
+                    if (parsed.transactions) transactions = parsed.transactions;
+                    if (parsed.schedules) schedules = parsed.schedules;
+                    if (parsed.pendingDeletions) pendingDeletions = parsed.pendingDeletions;
+
+                    // Asegurar credenciales de Javier Olate
+                    const javier = workers.find(w => w.id === "1" || (w.name && w.name.toLowerCase() === "javier olate") || w.role === "admin");
+                    if (javier) {
+                        javier.username = "Javier Olate";
+                        javier.pass = "fellhonpm";
+                    }
+
+                    saveToLocalStorage();
+                    saveToServer();
+                    updateUI();
+                    showToast("¡Respaldo importado y sincronizado al servidor exitosamente!", "database", "success");
+                } catch(err) {
+                    showToast("Error al procesar archivo de respaldo", "alert-triangle", "danger");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = "";
         }
 
         function checkLocation() {
