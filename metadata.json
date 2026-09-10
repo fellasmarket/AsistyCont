@@ -1,0 +1,6 @@
+{
+  "name": "Portal de Control - Asistencia y Finanzas",
+  "description": "Sistema de registro de asistencia laboral, gestión de turnos, anticipos, quincenas y contabilidad para empresas y sucursales.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
